@@ -38,21 +38,17 @@ function getPossiblePatternsForCoordinates(
 
   for (let tresholdY = -2; tresholdY <= 2; tresholdY++) {
     for (let tresholdX = -2; tresholdX <= 2; tresholdX++) {
-      getPossiblePatternsFromNextCharacter(currentCoordinates, tresholdX, tresholdY, numberOfRemainingMoves, currentPattern, result).forEach(pattern => {
-        if (!result.includes(pattern)) {
-          result.push(pattern);
-        }
-      })
+      result.push(...getPossiblePatternsFromNextCharacter(currentCoordinates, tresholdX, tresholdY, numberOfRemainingMoves, currentPattern, validPatterns));
     }
   }
   return result;
 }
 
-function getPossiblePatternsFromNextCharacter(currentCoordinates, tresholdX, tresholdY, numberOfRemainingMoves, currentPattern, result) {
+function getPossiblePatternsFromNextCharacter(currentCoordinates, tresholdX, tresholdY, numberOfRemainingMoves, currentPattern, validPatterns) {
   const nextCoordinates = { x: currentCoordinates.x + tresholdX, y: currentCoordinates.y + tresholdY }
   const nextCharacter = lockScreenMatrix[nextCoordinates.y]?.[nextCoordinates.x];
   return canMoveToNextCharacter(currentCoordinates, nextCharacter, tresholdX, tresholdY, currentPattern)
-    ? getPossiblePatternsForCoordinates(nextCoordinates, numberOfRemainingMoves - 1, currentPattern + nextCharacter, result)
+    ? getPossiblePatternsForCoordinates(nextCoordinates, numberOfRemainingMoves - 1, currentPattern + nextCharacter, validPatterns)
     : [];
 }
 
@@ -84,5 +80,5 @@ function abs(x) {
   return x < 0 ? -x : x;
 }
 
-const patterns = calculateCombinations('E', 2);
+const patterns = calculateCombinations('E', 8);
 console.log(patterns, patterns.length);
